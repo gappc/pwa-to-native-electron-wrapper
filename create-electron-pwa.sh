@@ -193,7 +193,7 @@ DESKTOP_FILE="${APP_NAME// /_}.desktop"
 cat <<EOF > "$DESKTOP_FILE"
 [Desktop Entry]
 Name=$APP_NAME
-Exec=$APP_DIR/node_modules/.bin/electron $APP_DIR --no-sandbox
+Exec=$APP_DIR/node_modules/electron/dist/electron $APP_DIR --no-sandbox
 Terminal=false
 Type=Application
 Icon=$APP_DIR/icon.png
