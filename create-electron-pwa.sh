@@ -17,6 +17,7 @@ show_help() {
     echo "Optional variables:"
     echo "  ICON_FILE=\"path/to/icon.png\""
     echo "  START_ON_LOGIN=\"true|false\""
+    echo "  START_MINIMIZED=\"true|false\""
     echo "  INSTALL_AS_DESKTOP_APP=\"true|false\""
     echo "  INSTALL_DEPENDENCIES_AFTER_CREATION=\"true|false\""
     exit 1
@@ -81,6 +82,7 @@ let tray;
 
 const APP_NAME = "$APP_NAME";
 const APP_URL = "$APP_URL";
+const START_MINIMIZED = "${START_MINIMIZED:-false}";
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -112,7 +114,9 @@ function createWindow() {
   });
 
   mainWindow.once('ready-to-show', () => {
-    mainWindow.show();
+    if (START_MINIMIZED !== "true") {
+      mainWindow.show();
+    }
   });
 
   mainWindow.on('close', (event) => {
@@ -244,6 +248,7 @@ Config:
 * APP_NAME: $APP_NAME
 * APP_URL: $APP_URL
 * START_ON_LOGIN: ${START_ON_LOGIN:-false}
+* START_MINIMIZED: ${START_MINIMIZED:-false}
 * INSTALL_AS_DESKTOP_APP: ${INSTALL_AS_DESKTOP_APP:-false}
 EOF
 

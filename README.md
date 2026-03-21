@@ -58,6 +58,7 @@ The project uses a simple bash-syntax configuration file.
 | `FOLDER_NAME` | **Yes** | The output subfolder name created within the `app/` directory. |
 | `ICON_FILE` | *No* | Path to a `.png` file used for the system tray, launcher icon, and window icon. Relative paths are resolved against the current working directory. |
 | `START_ON_LOGIN` | *No* | Set to `"true"` to automatically install the `.desktop` file to your `~/.config/autostart/` directory so the app launches silently on boot. |
+| `START_MINIMIZED` | *No* | Set to `"true"` to start the app minimized to the system tray. |
 | `INSTALL_AS_DESKTOP_APP`| *No* | Set to `"true"` to automatically install the `.desktop` file to your `~/.local/share/applications/` directory so the app appears in your system app launcher. |
 | `INSTALL_DEPENDENCIES_AFTER_CREATION`| *No* | Set to `"true"` to automatically run `npm install` inside the generated application folder after creation. |
 
