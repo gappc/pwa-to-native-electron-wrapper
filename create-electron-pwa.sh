@@ -15,6 +15,7 @@ show_help() {
     echo ""
     echo "Optional variables:"
     echo "  ICON_FILE=\"path/to/icon.png\""
+    echo "  START_ON_LOGIN=\"true|false\""
     exit 1
 }
 
@@ -231,7 +232,14 @@ Config:
 
 * APP_NAME: $APP_NAME
 * APP_URL: $APP_URL
+* START_ON_LOGIN: ${START_ON_LOGIN:-false}
 EOF
+
+if [[ "$START_ON_LOGIN" == "true" ]]; then
+    mkdir -p ~/.config/autostart/
+    cp "$DESKTOP_FILE" ~/.config/autostart/
+    echo "Autostart configured: the app will start automatically on login."
+fi
 
 echo "Done!"
 echo "Now run:"
