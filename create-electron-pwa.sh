@@ -16,6 +16,7 @@ show_help() {
     echo "Optional variables:"
     echo "  ICON_FILE=\"path/to/icon.png\""
     echo "  START_ON_LOGIN=\"true|false\""
+    echo "  INSTALL_AS_DESKTOP_APP=\"true|false\""
     exit 1
 }
 
@@ -233,12 +234,21 @@ Config:
 * APP_NAME: $APP_NAME
 * APP_URL: $APP_URL
 * START_ON_LOGIN: ${START_ON_LOGIN:-false}
+* INSTALL_AS_DESKTOP_APP: ${INSTALL_AS_DESKTOP_APP:-false}
 EOF
 
 if [[ "$START_ON_LOGIN" == "true" ]]; then
     mkdir -p ~/.config/autostart/
     cp "$DESKTOP_FILE" ~/.config/autostart/
     echo "Autostart configured: the app will start automatically on login."
+fi
+
+if [[ "$INSTALL_AS_DESKTOP_APP" == "true" ]]; then
+    mkdir -p ~/.local/share/applications/
+    cp "$DESKTOP_FILE" ~/.local/share/applications/
+    chmod +x ~/.local/share/applications/"$DESKTOP_FILE"
+    update-desktop-database ~/.local/share/applications/
+    echo "Desktop shortcut installed: you can now launch '$APP_NAME' from your app menu."
 fi
 
 echo "Done!"
