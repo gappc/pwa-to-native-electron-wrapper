@@ -53,9 +53,9 @@ cd "app/$FOLDER_NAME"
 
 # ---------------- package.json ----------------
 
-cat <<'EOF' > package.json
+cat <<EOF > package.json
 {
-"name": "pwa-wrapper",
+"name": "$FOLDER_NAME",
 "version": "1.0.0",
 "main": "main.js",
 "description": "Reusable PWA wrapper with tray support",
@@ -148,23 +148,23 @@ mainWindow.show();
 });
 }
 
+app.setName(APP_NAME);
+
 const gotLock = app.requestSingleInstanceLock();
 
 if (!gotLock) {
-app.quit();
+    app.quit();
 } else {
-app.on('second-instance', () => {
-if (mainWindow) mainWindow.show();
-});
+    app.on('second-instance', () => {
+        if (mainWindow) mainWindow.show();
+    });
 
-app.setName(APP_NAME);
+    app.whenReady().then(() => {
+        app.userAgentFallback = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 
-app.whenReady().then(() => {
-app.userAgentFallback = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
-
-createWindow();
-createTray();
-});
+        createWindow();
+        createTray();
+    });
 }
 
 app.on('activate', () => {
