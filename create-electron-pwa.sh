@@ -2,6 +2,7 @@
 
 set -e
 
+ORIGINAL_PWD=$(pwd)
 CONFIG_FILE="${1:-example.config}"
 
 show_help() {
@@ -17,6 +18,7 @@ show_help() {
     echo "  ICON_FILE=\"path/to/icon.png\""
     echo "  START_ON_LOGIN=\"true|false\""
     echo "  INSTALL_AS_DESKTOP_APP=\"true|false\""
+    echo "  INSTALL_DEPENDENCIES_AFTER_CREATION=\"true|false\""
     exit 1
 }
 
@@ -258,8 +260,17 @@ if [[ "$INSTALL_AS_DESKTOP_APP" == "true" ]]; then
     echo "Desktop shortcut installed: you can now launch '$APP_NAME' from your app menu."
 fi
 
+if [[ "$INSTALL_DEPENDENCIES_AFTER_CREATION" == "true" ]]; then
+    echo "Installing dependencies..."
+    npm install
+fi
+
 echo "Done!"
+cd "$ORIGINAL_PWD"
+
 echo "Now run:"
 echo "  cd app/$FOLDER_NAME"
-echo "  npm install"
+if [[ "$INSTALL_DEPENDENCIES_AFTER_CREATION" != "true" ]]; then
+    echo "  npm install"
+fi
 echo "  npm start"
