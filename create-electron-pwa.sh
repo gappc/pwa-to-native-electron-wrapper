@@ -101,7 +101,7 @@ mainWindow.on('page-title-updated', (event, title) => {
     const match = title.match(/^\((\d+)\)/);
     if (match) {
         const unreadCount = parseInt(match[1], 10);
-        if (tray) tray.setToolTip(`${APP_NAME} (${unreadCount} unread)`);
+        if (tray) tray.setToolTip(\`$APP_NAME (\${unreadCount} unread)\`);
         if (app.setBadgeCount) app.setBadgeCount(unreadCount);
     } else {
         if (tray) tray.setToolTip(APP_NAME);
@@ -204,8 +204,8 @@ EOF
 
 # ---------------- README ----------------
 
-cat <<EOF > README.txt
-Project created!
+cat <<EOF > README.md
+# $APP_NAME - electron wrapper around $APP_URL
 
 Next steps:
 
@@ -217,17 +217,25 @@ Next steps:
 
 Optional (Desktop integration for launcher and badges):
 To install the desktop shortcut so it appears in your launcher, run:
-   mkdir -p ~/.local/share/applications/
-   cp "$DESKTOP_FILE" ~/.local/share/applications/
-   chmod +x ~/.local/share/applications/"$DESKTOP_FILE"
-   update-desktop-database ~/.local/share/applications/
+
+\`\`\`bash
+mkdir -p ~/.local/share/applications/
+cp "$DESKTOP_FILE" ~/.local/share/applications/
+chmod +x ~/.local/share/applications/"$DESKTOP_FILE"
+update-desktop-database ~/.local/share/applications/
+\`\`\`
 
 Then you can launch "$APP_NAME" directly from your app menu!
 
-Optional (GNOME tray support):
-sudo apt install gnome-shell-extension-appindicator
+Optional (Autostart on login):
 
-# log out and back in
+\`\`\`bash
+mkdir -p ~/.config/autostart/
+cp "$DESKTOP_FILE" ~/.config/autostart/
+\`\`\`
+
+Optional (GNOME tray support, not needed on newer Ubuntu versions):
+sudo apt install gnome-shell-extension-appindicator
 
 Config:
 
@@ -246,7 +254,6 @@ fi
 if [[ "$INSTALL_AS_DESKTOP_APP" == "true" ]]; then
     mkdir -p ~/.local/share/applications/
     cp "$DESKTOP_FILE" ~/.local/share/applications/
-    chmod +x ~/.local/share/applications/"$DESKTOP_FILE"
     update-desktop-database ~/.local/share/applications/
     echo "Desktop shortcut installed: you can now launch '$APP_NAME' from your app menu."
 fi
