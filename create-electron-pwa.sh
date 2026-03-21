@@ -55,16 +55,16 @@ cd "app/$FOLDER_NAME"
 
 cat <<EOF > package.json
 {
-"name": "$FOLDER_NAME",
-"version": "1.0.0",
-"main": "main.js",
-"description": "Reusable PWA wrapper with tray support",
-"scripts": {
-"start": "electron . --no-sandbox"
-},
-"dependencies": {
-"electron": "^28.0.0"
-}
+  "name": "$FOLDER_NAME",
+  "version": "1.0.0",
+  "main": "main.js",
+  "description": "Reusable PWA wrapper with tray support",
+  "scripts": {
+    "start": "electron . --no-sandbox"
+  },
+  "dependencies": {
+    "electron": "^28.0.0"
+  }
 }
 EOF
 
@@ -81,71 +81,71 @@ const APP_NAME = "$APP_NAME";
 const APP_URL = "$APP_URL";
 
 function createWindow() {
-mainWindow = new BrowserWindow({
-width: 1000,
-height: 800,
-show: false,
-icon: path.join(__dirname, 'icon.png'),
-autoHideMenuBar: true,
-webPreferences: {
-preload: path.join(__dirname, 'preload.js')
-}
-});
+  mainWindow = new BrowserWindow({
+    width: 1000,
+    height: 800,
+    show: false,
+    icon: path.join(__dirname, 'icon.png'),
+    autoHideMenuBar: true,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js')
+    }
+  });
 
-mainWindow.setMenu(null);
-mainWindow.loadURL(APP_URL);
+  mainWindow.setMenu(null);
+  mainWindow.loadURL(APP_URL);
 
-mainWindow.on('page-title-updated', (event, title) => {
+  mainWindow.on('page-title-updated', (event, title) => {
     // Many PWAs (like WhatsApp, Slack, Discord) format their title as "(X) App Name" 
     // when there are unread notifications.
     const match = title.match(/^\((\d+)\)/);
     if (match) {
-        const unreadCount = parseInt(match[1], 10);
-        if (tray) tray.setToolTip(\`$APP_NAME (\${unreadCount} unread)\`);
-        if (app.setBadgeCount) app.setBadgeCount(unreadCount);
+      const unreadCount = parseInt(match[1], 10);
+      if (tray) tray.setToolTip(\`$APP_NAME (\${unreadCount} unread)\`);
+      if (app.setBadgeCount) app.setBadgeCount(unreadCount);
     } else {
-        if (tray) tray.setToolTip(APP_NAME);
-        if (app.setBadgeCount) app.setBadgeCount(0);
+      if (tray) tray.setToolTip(APP_NAME);
+      if (app.setBadgeCount) app.setBadgeCount(0);
     }
-});
+  });
 
-mainWindow.once('ready-to-show', () => {
-mainWindow.show();
-});
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show();
+  });
 
-mainWindow.on('close', (event) => {
-if (!app.isQuiting) {
-event.preventDefault();
-mainWindow.hide();
-}
-});
+  mainWindow.on('close', (event) => {
+    if (!app.isQuiting) {
+      event.preventDefault();
+      mainWindow.hide();
+    }
+  });
 }
 
 function createTray() {
-tray = new Tray(path.join(__dirname, 'icon.png'));
+  tray = new Tray(path.join(__dirname, 'icon.png'));
 
-const contextMenu = Menu.buildFromTemplate([
-{ label: APP_NAME, click: () => mainWindow.show() },
-{ type: 'separator' },
-{
-label: 'Quit',
-click: () => {
-app.isQuiting = true;
-app.quit();
-}
-}
-]);
+  const contextMenu = Menu.buildFromTemplate([
+    { label: APP_NAME, click: () => mainWindow.show() },
+    { type: 'separator' },
+    {
+      label: 'Quit',
+      click: () => {
+        app.isQuiting = true;
+        app.quit();
+      }
+    }
+  ]);
 
-tray.setToolTip(APP_NAME);
-tray.setContextMenu(contextMenu);
+  tray.setToolTip(APP_NAME);
+  tray.setContextMenu(contextMenu);
 
-tray.on('click', () => {
-if (mainWindow.isVisible()) {
-mainWindow.hide();
-} else {
-mainWindow.show();
-}
-});
+  tray.on('click', () => {
+    if (mainWindow.isVisible()) {
+      mainWindow.hide();
+    } else {
+      mainWindow.show();
+    }
+  });
 }
 
 app.setName(APP_NAME);
@@ -153,22 +153,22 @@ app.setName(APP_NAME);
 const gotLock = app.requestSingleInstanceLock();
 
 if (!gotLock) {
-    app.quit();
+  app.quit();
 } else {
-    app.on('second-instance', () => {
-        if (mainWindow) mainWindow.show();
-    });
+  app.on('second-instance', () => {
+    if (mainWindow) mainWindow.show();
+  });
 
-    app.whenReady().then(() => {
-        app.userAgentFallback = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+  app.whenReady().then(() => {
+    app.userAgentFallback = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 
-        createWindow();
-        createTray();
-    });
+    createWindow();
+    createTray();
+  });
 }
 
 app.on('activate', () => {
-if (mainWindow) mainWindow.show();
+  if (mainWindow) mainWindow.show();
 });
 EOF
 
