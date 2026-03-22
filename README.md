@@ -47,6 +47,18 @@ To add the newly wrapped app to your application launcher (like GNOME/KDE Dash):
    update-desktop-database ~/.local/share/applications/
    ```
 
+### Troubleshooting Icons (Ubuntu 24.10 / 25.10 / GNOME / Wayland)
+
+If you are seeing a placeholder icon in the menu bar (tray) or the dock:
+
+1.  **GNOME Tray Support**: GNOME does not support tray icons by default. You must install the AppIndicator extension:
+    ```bash
+    sudo apt install gnome-shell-extension-appindicator libayatana-appindicator3-1
+    ```
+    After installing, you may need to log out and log back in, or enable the extension in the "Extensions" app.
+2.  **Wayland Compatibility**: The script now automatically adds `StartupWMClass` to the `.desktop` file. This helps GNOME associate the running window with the correct icon. If you are using an older version of the script, regenerate your app or manually add `StartupWMClass=<FOLDER_NAME>` to your `.desktop` file.
+3.  **Correct Icon Format**: Ensure your `ICON_FILE` is a valid PNG image. 256x256 or 512x512 pixels is recommended. If no icon is provided, the script now uses a default fallback icon.
+
 ## Configuration File Structure
 
 The project uses a simple bash-syntax configuration file. 

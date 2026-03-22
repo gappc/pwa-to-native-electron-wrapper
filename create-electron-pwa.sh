@@ -3,6 +3,7 @@
 set -e
 
 ORIGINAL_PWD=$(pwd)
+SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 CONFIG_FILE="${1:-example.config}"
 
 show_help() {
@@ -188,8 +189,11 @@ EOF
 
 if [[ -n "$ICON_FILE" && -f "$ICON_FILE" ]]; then
     cp "$ICON_FILE" icon.png
+elif [[ -f "$SCRIPT_DIR/default-icon.png" ]]; then
+    echo "No custom icon provided or file not found, using default-icon.png"
+    cp "$SCRIPT_DIR/default-icon.png" icon.png
 else
-    echo "No custom icon provided or file not found, creating empty icon.png"
+    echo "Warning: No custom icon provided and default-icon.png not found, creating empty icon.png"
     touch icon.png
 fi
 
@@ -205,6 +209,7 @@ Exec=$APP_DIR/node_modules/electron/dist/electron $APP_DIR --no-sandbox
 Terminal=false
 Type=Application
 Icon=$APP_DIR/icon.png
+StartupWMClass=$FOLDER_NAME
 Categories=Network;WebBrowser;
 EOF
 
@@ -240,8 +245,9 @@ mkdir -p ~/.config/autostart/
 cp "$DESKTOP_FILE" ~/.config/autostart/
 \`\`\`
 
-Optional (GNOME tray support, not needed on newer Ubuntu versions):
-sudo apt install gnome-shell-extension-appindicator
+Optional (GNOME tray support, recommended for Ubuntu 24.10 and 25.10):
+To ensure the tray icon is visible in the top bar, you may need the AppIndicator extension:
+sudo apt install gnome-shell-extension-appindicator libayatana-appindicator3-1
 
 Config:
 
