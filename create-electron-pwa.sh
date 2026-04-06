@@ -155,7 +155,7 @@ function createTray() {
   });
 }
 
-app.setName(APP_NAME);
+app.setName("$FOLDER_NAME");
 
 const gotLock = app.requestSingleInstanceLock();
 
